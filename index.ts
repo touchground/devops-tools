@@ -27,7 +27,7 @@ async function run() {
       }
       core.addPath(toolPath);
       // Show kubectl version
-      await exec.exec('kubectl', ['version', '--client']);
+      await exec.exec(`kubectl version --client`);
       await exec.exec(`which kubectl`);
     }
 
@@ -43,7 +43,7 @@ async function run() {
       }
       core.addPath(`${process.env.HOME}/.krew/bin`);
       // Show krew version
-      await exec.exec('kubectl', ['krew'], ['version']);
+      await exec.exec(`kubectl krew version`);
     }
 
     // Install kustomize
@@ -155,7 +155,7 @@ async function run() {
       }
       core.addPath(toolPath);
       // Show argocd version
-      await exec.exec('argocd', ['version'], ['--client']);
+      await exec.exec(`argocd version --client`);
       await exec.exec(`which argocd`);
     }
 
