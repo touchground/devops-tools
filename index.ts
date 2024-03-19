@@ -106,7 +106,7 @@ async function run() {
         const downloadPath = await tc.downloadTool(`https://github.com/mikefarah/yq/releases/download/v${yqVersion}/yq_linux_amd64.tar.gz`);
         const extractedPath = await tc.extractTar(downloadPath);
         await exec.exec(`chmod +x ${extractedPath}`);
-        toolPath = await tc.cacheFile(extractedPath, 'yq_linux_amd64', 'yq', yqVersion);
+        toolPath = await tc.cacheFile(`${extractedPath}/yq_linux_amd64/yq_linux_amd64`, 'yq_linux_amd64', 'yq', yqVersion);
       }
       core.addPath(toolPath);
     }
