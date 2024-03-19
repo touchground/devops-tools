@@ -119,7 +119,7 @@ async function run() {
         const parentDirectory = path.dirname(downloadPath);
         await exec.exec(`sudo install -m 555 ${downloadPath} ${parentDirectory}/argocd`);
         await exec.exec(`chmod +x ${parentDirectory}`)
-        toolPath = await tc.cacheFile(`${parentDirectory}`, 'argocd', 'argocd', argocdVersion);
+        toolPath = await tc.cacheFile(`${parentDirectory}/argocd`, 'argocd', 'argocd', argocdVersion);
       }
       core.addPath(toolPath);
     }
