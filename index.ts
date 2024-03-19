@@ -26,6 +26,9 @@ async function run() {
         toolPath = await tc.cacheFile(downloadPath, 'kubectl', 'kubectl', kubectlVersion);
       }
       core.addPath(toolPath);
+      // Show kubectl version
+      await exec.exec('kubectl', ['version', '--client']);
+      await exec.exec(`which kubectl`);
     }
 
     // Install krew
@@ -39,6 +42,8 @@ async function run() {
         toolPath = await tc.cacheDir(extractedPath, 'krew', krewVersion);
       }
       core.addPath(`${process.env.HOME}/.krew/bin`);
+      // Show krew version
+      await exec.exec('kubectl', ['krew'], ['version']);
     }
 
     // Install kustomize
@@ -50,6 +55,9 @@ async function run() {
         toolPath = await tc.cacheDir(extractedPath, 'kustomize', kustomizeVersion);
       }
       core.addPath(toolPath);
+      // Show kustomize version
+      await exec.exec('kustomize', ['version']);
+      await exec.exec(`which kustomize`);
     }
 
     // Install helm
@@ -62,6 +70,9 @@ async function run() {
         toolPath = await tc.cacheFile(`${extractedPath}/linux-amd64/helm`, 'helm', 'helm', helmVersion);
       }
       core.addPath(toolPath);
+      // Show helm version
+      await exec.exec('helm', ['version']);
+      await exec.exec(`which helm`);
     }
 
     // Install conftest
@@ -73,6 +84,9 @@ async function run() {
         toolPath = await tc.cacheDir(extractedPath, 'conftest', conftestVersion);
       }
       core.addPath(toolPath);
+      // Show conftest version
+      await exec.exec('conftest', ['--version']);
+      await exec.exec(`which conftest`);
     }
   
     // Install Kubeval
@@ -84,6 +98,9 @@ async function run() {
         toolPath = await tc.cacheDir(extractedPath, 'kubeval', kubevalVersion);
       }
       core.addPath(toolPath);
+      // Show kubeval version
+      await exec.exec('kubeval', ['--version']);
+      await exec.exec(`which kubeval`);
     }
 
     // Install gh
@@ -97,18 +114,33 @@ async function run() {
         // toolPath = await tc.cacheDir(extractedPath, 'gh', ghVersion);
       }
       core.addPath(toolPath);
+      // Show gh version
+      await exec.exec('gh', ['version']);
+      await exec.exec(`which gh`);
     }
 
     // Install yq
     if (yqVersion) {
-      toolPath = tc.find('yq', yqVersion);
-      if (!toolPath) {
+      // toolPath = tc.find('yq', yqVersion);
+      // if (!toolPath) {
+      // Check if yq is the expected version
+      let yqActualVersion = '';
+      try {
+        yqActualVersion = (await exec.getExecOutput('yq', ['--version'])).stdout;
+      } catch (error) {
+        core.setFailed(`yq not found: ${error.message}`);
+      }
+      if (!yqActualVersion.includes(yqVersion)) {
         const downloadPath = await tc.downloadTool(`https://github.com/mikefarah/yq/releases/download/v${yqVersion}/yq_linux_amd64.tar.gz`);
         const extractedPath = await tc.extractTar(downloadPath);
         await exec.exec(`chmod +x ${extractedPath}`);
         toolPath = await tc.cacheFile(`${extractedPath}/yq_linux_amd64`, 'yq_linux_amd64', 'yq', yqVersion);
+        core.addPath(toolPath);
       }
-      core.addPath(toolPath);
+      
+      // Show yq version
+      await exec.exec('yq', ['--version']);
+      await exec.exec(`which yq`);
     }
 
     // Install ArgoCD
@@ -122,6 +154,9 @@ async function run() {
         toolPath = await tc.cacheFile(`${parentDirectory}/argocd`, 'argocd', 'argocd', argocdVersion);
       }
       core.addPath(toolPath);
+      // Show argocd version
+      await exec.exec('argocd', ['version'], ['--client']);
+      await exec.exec(`which argocd`);
     }
 
   } catch (error) {
