@@ -42,7 +42,7 @@ jobs:
         kubeval: '0.16.1'
         yq: '4.42.1'
         argocd: '2.10.4'
-        
+
     - run: |
         kubectl version --client
         kubectl krew
@@ -53,9 +53,6 @@ jobs:
         kubeval --version
         yq -V
         argocd version --client
-
-    - run: |
-        rm argocd*.*
 
     - name: Delete remote release branch
       run: |
