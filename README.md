@@ -7,7 +7,7 @@ Specific versions for the commands can be setup by adding inputs parameters like
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-    - uses: touchground/devops-tools@main
+    - uses: touchground/devops-tools@release
       with:
         kubectl: '1.20.0'
         helm: '3.4.2'

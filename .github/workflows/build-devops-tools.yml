@@ -40,6 +40,7 @@ jobs:
         helm: '3.14.2'
         conftest: '0.39.0'
         kubeval: '0.16.1'
+        argocd: '2.10.4'
     - run: |
         kubectl version --client
         kubectl krew
@@ -48,6 +49,7 @@ jobs:
         which helm
         conftest --version
         kubeval --version
+        argocd version
 
     - name: Delete remote release branch
       run: |

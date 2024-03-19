@@ -1,6 +1,8 @@
 import * as core from '@actions/core';
 import * as exec from '@actions/exec';
 import * as tc from '@actions/tool-cache';
+import * as path from 'path';
+import * as fs from 'fs';
 
 async function run() {
   try {
@@ -12,6 +14,7 @@ async function run() {
     const kubevalVersion = core.getInput('kubeval');
     const ghVersion = core.getInput('gh');
     const yqVersion = core.getInput('yq');
+    const argocdVersion = core.getInput('argocd');
     let toolPath = '';
 
     // Install kubectl
@@ -104,6 +107,19 @@ async function run() {
         const extractedPath = await tc.extractTar(downloadPath);
         await exec.exec(`chmod +x ${extractedPath}/yq_linux_amd64/yq_linux_amd64`);
         toolPath = await tc.cacheFile(`${extractedPath}/yq_linux_amd64`, 'yq_linux_amd64', 'yq', yqVersion);
+      }
+      core.addPath(toolPath);
+    }
+
+    // Install ArgoCD
+    if (argocdVersion) {
+      toolPath = tc.find('argocd', argocdVersion);
+      if (!toolPath) {
+        const downloadPath = await tc.downloadTool(`https://github.com/argoproj/argo-cd/releases/download/v${argocdVersion}/argocd-linux-amd64`);
+        const exePath = path.join(process.env.RUNNER_TEMP, 'argocd');
+        fs.renameSync(downloadPath, exePath);
+        fs.chmodSync(exePath, '755');
+        toolPath = await tc.cacheFile(exePath, 'argocd', 'argocd', argocdVersion);
       }
       core.addPath(toolPath);
     }
