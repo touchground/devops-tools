@@ -51,7 +51,7 @@ jobs:
         conftest --version
         kubeval --version
         yq -V
-        argocd version
+        argocd version --client
 
     - name: Delete remote release branch
       run: |
