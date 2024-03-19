@@ -106,7 +106,7 @@ async function run() {
         const downloadPath = await tc.downloadTool(`https://github.com/mikefarah/yq/releases/download/v${yqVersion}/yq_linux_amd64.tar.gz`);
         const extractedPath = await tc.extractTar(downloadPath);
         await exec.exec(`chmod +x ${extractedPath}/yq_linux_amd64/yq_linux_amd64`);
-        toolPath = await tc.cacheFile(`${extractedPath}/yq_linux_amd64`, 'yq_linux_amd64', 'yq', yqVersion);
+        toolPath = await tc.cacheFile(`${extractedPath}/yq_linux_amd64/yq_linux_amd64`, 'yq_linux_amd64', 'yq', yqVersion);
       }
       core.addPath(toolPath);
     }
@@ -116,10 +116,8 @@ async function run() {
       toolPath = tc.find('argocd', argocdVersion);
       if (!toolPath) {
         const downloadPath = await tc.downloadTool(`https://github.com/argoproj/argo-cd/releases/download/v${argocdVersion}/argocd-linux-amd64`);
-        const exePath = path.join(process.env.RUNNER_TEMP, 'argocd');
-        fs.renameSync(downloadPath, exePath);
-        fs.chmodSync(exePath, '755');
-        toolPath = await tc.cacheFile(exePath, 'argocd', 'argocd', argocdVersion);
+        await exec.exec(`chmod +x ${downloadPath}`);
+        toolPath = await tc.cacheFile(downloadPath, 'argocd-linux-amd64', 'argocd', yqVersion);
       }
       core.addPath(toolPath);
     }
