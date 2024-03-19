@@ -43,7 +43,7 @@ async function run() {
       }
       core.addPath(`${process.env.HOME}/.krew/bin`);
       // Show krew version
-      await exec.exec(`kubectl tg-krew version`);
+      await exec.exec(`tg-kubectl tg-krew version`);
     }
 
     // Install kustomize
