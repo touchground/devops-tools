@@ -52,7 +52,8 @@ async function run() {
       if (!toolPath) {
         const downloadPath = await tc.downloadTool(`https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv${kustomizeVersion}/kustomize_v${kustomizeVersion}_linux_amd64.tar.gz`);
         const extractedPath = await tc.extractTar(downloadPath);
-        toolPath = await tc.cacheDir(extractedPath, 'tg-kustomize', kustomizeVersion);
+        await exec.exec(`chmod +x ${extractedPath}`);
+        toolPath = await tc.cacheFile(extractedPath, 'tg-kustomize', 'tg-kustomize', kustomizeVersion);
       }
       core.addPath(toolPath);
       // Show kustomize version
@@ -81,7 +82,8 @@ async function run() {
       if (!toolPath) {
         const downloadPath = await tc.downloadTool(`https://github.com/open-policy-agent/conftest/releases/download/v${conftestVersion}/conftest_${conftestVersion}_Linux_x86_64.tar.gz`);
         const extractedPath = await tc.extractTar(downloadPath);
-        toolPath = await tc.cacheDir(extractedPath, 'tg-conftest', conftestVersion);
+        await exec.exec(`chmod +x ${extractedPath}/conftest`);
+        toolPath = await tc.cacheFile(extractedPath, 'tg-conftest', 'tg-conftest', conftestVersion);
       }
       core.addPath(toolPath);
       // Show conftest version
