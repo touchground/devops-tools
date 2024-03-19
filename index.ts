@@ -83,7 +83,7 @@ async function run() {
         const downloadPath = await tc.downloadTool(`https://github.com/open-policy-agent/conftest/releases/download/v${conftestVersion}/conftest_${conftestVersion}_Linux_x86_64.tar.gz`);
         const extractedPath = await tc.extractTar(downloadPath);
         await exec.exec(`chmod +x ${extractedPath}/conftest`);
-        toolPath = await tc.cacheFile(extractedPath, 'tg-conftest', 'tg-conftest', conftestVersion);
+        toolPath = await tc.cacheFile(`${extractedPath}/conftest`, 'tg-conftest', 'tg-conftest', conftestVersion);
       }
       core.addPath(toolPath);
       // Show conftest version
@@ -97,7 +97,8 @@ async function run() {
       if (!toolPath) {
         const downloadPath = await tc.downloadTool(`https://github.com/instrumenta/kubeval/releases/download/v${kubevalVersion}/kubeval-linux-amd64.tar.gz`);
         const extractedPath = await tc.extractTar(downloadPath);
-        toolPath = await tc.cacheDir(extractedPath, 'tg-kubeval', kubevalVersion);
+        await exec.exec(`chmod +x ${extractedPath}/kubeval`);
+        toolPath = await tc.cacheFile(`${extractedPath}/kubeval`, 'tg-kubeval', 'tg-kubeval', kubevalVersion);
       }
       core.addPath(toolPath);
       // Show kubeval version
