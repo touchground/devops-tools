@@ -124,14 +124,14 @@ async function run() {
 
      // Install yq
      if (yqVersion) {
-      toolPath = tc.find('tg-yq', yqVersion);
-      if (!toolPath) {
+      // toolPath = tc.find('tg-yq', yqVersion);
+      // if (!toolPath) {
         const downloadPath = await tc.downloadTool(`https://github.com/mikefarah/yq/releases/download/v${yqVersion}/yq_linux_amd64.tar.gz`);
         const extractedPath = await tc.extractTar(downloadPath);
         await exec.exec(`chmod +x ${extractedPath}/yq_linux_amd64`);
         toolPath = await tc.cacheFile(`${extractedPath}/yq_linux_amd64`, 'tg-yq', 'tg-yq', yqVersion);
         core.addPath(toolPath);
-      }
+      // }
       
       // Show yq version
       await exec.exec('tg-yq', ['--version']);
