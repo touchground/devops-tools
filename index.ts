@@ -53,7 +53,7 @@ async function run() {
         const downloadPath = await tc.downloadTool(`https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv${kustomizeVersion}/kustomize_v${kustomizeVersion}_linux_amd64.tar.gz`);
         const extractedPath = await tc.extractTar(downloadPath);
         await exec.exec(`chmod +x ${extractedPath}/kustomize`);
-        toolPath = await tc.cacheFile(`${extractedPath}/kustomize, 'tg-kustomize', 'tg-kustomize', kustomizeVersion);
+        toolPath = await tc.cacheFile(`${extractedPath}/kustomize`, 'tg-kustomize', 'tg-kustomize', kustomizeVersion);
       }
       core.addPath(toolPath);
       // Show kustomize version
