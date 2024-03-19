@@ -1,5 +1,6 @@
 # devops-tools
 devops-tools is a simple GitHub Action that installs kubectl, helm, kustomize, etc. in the an action runner.  Cached versions are used if available.
+To use the installed tools, add "gh-" prefix, such as "gh-yq".  This is to avoid the conflict with existing installed tools in the runner.
 
 Specific versions for the commands can be setup by adding inputs parameters like this:
 ```yaml

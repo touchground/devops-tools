@@ -14,13 +14,12 @@ async function run() {
     const kubevalVersion = core.getInput('kubeval');
     const ghVersion = core.getInput('gh');
     const yqVersion = core.getInput('yq');
-    const jhyqVersion = core.getInput('jhyq');
     const argocdVersion = core.getInput('argocd');
     let toolPath = '';
 
     // Install kubectl
     if (kubectlVersion) {
-      toolPath = tc.find('kubectl', kubectlVersion);
+      toolPath = tc.find('tg-kubectl', kubectlVersion);
       if (!toolPath) {
         const downloadPath = await tc.downloadTool(`https://dl.k8s.io/release/v${kubectlVersion}/bin/linux/amd64/kubectl`);
         await exec.exec(`chmod +x ${downloadPath}`);
@@ -28,160 +27,128 @@ async function run() {
       }
       core.addPath(toolPath);
       // Show kubectl version
-      await exec.exec(`kubectl version --client`);
-      await exec.exec(`which kubectl`);
+      await exec.exec(`tg-kubectl version --client`);
+      await exec.exec(`which tg-kubectl`);
     }
 
     // Install krew
     if (krewVersion) {
-      toolPath = tc.find('krew', krewVersion);
+      toolPath = tc.find('tg-krew', krewVersion);
       if (!toolPath) {
         const downloadPath = await tc.downloadTool(`https://github.com/kubernetes-sigs/krew/releases/download/v${krewVersion}/krew-linux_amd64.tar.gz`);
         const extractedPath = await tc.extractTar(downloadPath);
         await exec.exec(`chmod +x ${extractedPath}/krew-linux_amd64`);
         await exec.exec(`${extractedPath}/krew-linux_amd64 install krew`);
-        toolPath = await tc.cacheDir(extractedPath, 'krew', krewVersion);
+        toolPath = await tc.cacheDir(extractedPath, 'tg-krew', krewVersion);
       }
       core.addPath(`${process.env.HOME}/.krew/bin`);
       // Show krew version
-      await exec.exec(`kubectl krew version`);
+      await exec.exec(`kubectl tg-krew version`);
     }
 
     // Install kustomize
     if (kustomizeVersion) {
-      toolPath = tc.find('kustomize', kustomizeVersion);
+      toolPath = tc.find('tg-kustomize', kustomizeVersion);
       if (!toolPath) {
         const downloadPath = await tc.downloadTool(`https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv${kustomizeVersion}/kustomize_v${kustomizeVersion}_linux_amd64.tar.gz`);
         const extractedPath = await tc.extractTar(downloadPath);
-        toolPath = await tc.cacheDir(extractedPath, 'kustomize', kustomizeVersion);
+        toolPath = await tc.cacheDir(extractedPath, 'tg-kustomize', kustomizeVersion);
       }
       core.addPath(toolPath);
       // Show kustomize version
-      await exec.exec('kustomize', ['version']);
-      await exec.exec(`which kustomize`);
+      await exec.exec('tg-kustomize', ['version']);
+      await exec.exec(`which tg-kustomize`);
     }
 
     // Install helm
     if (helmVersion) {
-    toolPath = tc.find('helm', helmVersion);
+    toolPath = tc.find('tg-helm', helmVersion);
       if (!toolPath) {
         const downloadPath = await tc.downloadTool(`https://get.helm.sh/helm-v${helmVersion}-linux-amd64.tar.gz`);
         const extractedPath = await tc.extractTar(downloadPath);
         await exec.exec(`chmod +x ${extractedPath}/linux-amd64/helm`);
-        toolPath = await tc.cacheFile(`${extractedPath}/linux-amd64/helm`, 'helm', 'helm', helmVersion);
+        toolPath = await tc.cacheFile(`${extractedPath}/linux-amd64/helm`, 'tg-helm', 'tg-helm', helmVersion);
       }
       core.addPath(toolPath);
       // Show helm version
-      await exec.exec('helm', ['version']);
-      await exec.exec(`which helm`);
+      await exec.exec('tg-helm', ['version']);
+      await exec.exec(`which tg-helm`);
     }
 
     // Install conftest
     if (conftestVersion) {
-      toolPath = tc.find('conftest', conftestVersion);
+      toolPath = tc.find('tg-conftest', conftestVersion);
       if (!toolPath) {
         const downloadPath = await tc.downloadTool(`https://github.com/open-policy-agent/conftest/releases/download/v${conftestVersion}/conftest_${conftestVersion}_Linux_x86_64.tar.gz`);
         const extractedPath = await tc.extractTar(downloadPath);
-        toolPath = await tc.cacheDir(extractedPath, 'conftest', conftestVersion);
+        toolPath = await tc.cacheDir(extractedPath, 'tg-conftest', conftestVersion);
       }
       core.addPath(toolPath);
       // Show conftest version
-      await exec.exec('conftest', ['--version']);
-      await exec.exec(`which conftest`);
+      await exec.exec('tg-conftest', ['--version']);
+      await exec.exec(`which tg-conftest`);
     }
   
-    // Install Kubeval
+    // Install kubeval
     if (kubevalVersion) {
-      toolPath = tc.find('kubeval', kubevalVersion);
+      toolPath = tc.find('tg-kubeval', kubevalVersion);
       if (!toolPath) {
         const downloadPath = await tc.downloadTool(`https://github.com/instrumenta/kubeval/releases/download/v${kubevalVersion}/kubeval-linux-amd64.tar.gz`);
         const extractedPath = await tc.extractTar(downloadPath);
-        toolPath = await tc.cacheDir(extractedPath, 'kubeval', kubevalVersion);
+        toolPath = await tc.cacheDir(extractedPath, 'tg-kubeval', kubevalVersion);
       }
       core.addPath(toolPath);
       // Show kubeval version
-      await exec.exec('kubeval', ['--version']);
-      await exec.exec(`which kubeval`);
+      await exec.exec('tg-kubeval', ['--version']);
+      await exec.exec(`which tg-kubeval`);
     }
 
     // Install gh
     if (ghVersion) {
-      toolPath = tc.find('gh', ghVersion);
+      toolPath = tc.find('tg-gh', ghVersion);
       if (!toolPath) {
         const downloadPath = await tc.downloadTool(`https://github.com/cli/cli/releases/download/v${ghVersion}/gh_${ghVersion}_linux_amd64.tar.gz`);
         const extractedPath = await tc.extractTar(downloadPath);
         await exec.exec(`chmod +x ${extractedPath}/gh_${ghVersion}_linux_amd64/bin/gh`);
-        toolPath = await tc.cacheFile(`${extractedPath}/gh_${ghVersion}_linux_amd64/bin/gh`, 'gh', 'gh', ghVersion);
-        // toolPath = await tc.cacheDir(extractedPath, 'gh', ghVersion);
+        toolPath = await tc.cacheFile(`${extractedPath}/gh_${ghVersion}_linux_amd64/bin/gh`, 'tg-gh', 'tg-gh', ghVersion);
+        // toolPath = await tc.cacheDir(extractedPath, 'tg-gh', ghVersion);
       }
       core.addPath(toolPath);
       // Show gh version
-      await exec.exec('gh', ['version']);
-      await exec.exec(`which gh`);
+      await exec.exec('tg-gh', ['version']);
+      await exec.exec(`which tg-gh`);
     }
 
-    // Install yq
-    if (yqVersion) {
-      // toolPath = tc.find('yq', yqVersion);
-      // if (!toolPath) {
-      // Check if yq is the expected version
-      let yqActualVersion = '';
-      try {
-        yqActualVersion = (await exec.getExecOutput('yq', ['--version'])).stdout;
-      } catch (error) {
-        core.setFailed(`yq not found: ${error.message}`);
-      }
-      if (!yqActualVersion.includes(yqVersion)) {
+     // Install yq
+     if (yqVersion) {
+      toolPath = tc.find('tg-yq', yqVersion);
+      if (!toolPath) {
         const downloadPath = await tc.downloadTool(`https://github.com/mikefarah/yq/releases/download/v${yqVersion}/yq_linux_amd64.tar.gz`);
         const extractedPath = await tc.extractTar(downloadPath);
         await exec.exec(`chmod +x ${extractedPath}`);
-        toolPath = await tc.cacheFile(`${extractedPath}/yq_linux_amd64`, 'yq_linux_amd64', 'yq', yqVersion);
+        toolPath = await tc.cacheFile(`${extractedPath}/yq_linux_amd64`, 'tg-yq', 'tg-yq', yqVersion);
         core.addPath(toolPath);
       }
       
       // Show yq version
-      await exec.exec('yq', ['--version']);
-      await exec.exec(`which yq`);
+      await exec.exec('tg-yq', ['--version']);
+      await exec.exec(`which tg-yq`);
     }
 
-     // Install jh-yq
-     if (jhyqVersion) {
-      // toolPath = tc.find('yq', yqVersion);
-      // if (!toolPath) {
-      // Check if yq is the expected version
-      // let yqActualVersion = '';
-      // try {
-      //   yqActualVersion = (await exec.getExecOutput('jh-yq', ['--version'])).stdout;
-      // } catch (error) {
-      //   core.setFailed(`yq not found: ${error.message}`);
-      // }
-      // if (!yqActualVersion.includes(jhyqVersion)) {
-        const downloadPath = await tc.downloadTool(`https://github.com/mikefarah/yq/releases/download/v${jhyqVersion}/yq_linux_amd64.tar.gz`);
-        const extractedPath = await tc.extractTar(downloadPath);
-        await exec.exec(`chmod +x ${extractedPath}`);
-        toolPath = await tc.cacheFile(`${extractedPath}/yq_linux_amd64`, 'jh-yq', 'jh-yq', jhyqVersion);
-        core.addPath(toolPath);
-      // }
-      
-      // Show yq version
-      await exec.exec('jh-yq', ['--version']);
-      await exec.exec(`which jh-yq`);
-    }
-
-    // Install ArgoCD
+    // Install argocd
     if (argocdVersion) {
-      toolPath = tc.find('argocd', argocdVersion);
+      toolPath = tc.find('tg-argocd', argocdVersion);
       if (!toolPath) {
         const downloadPath = await tc.downloadTool(`https://github.com/argoproj/argo-cd/releases/download/v${argocdVersion}/argocd-linux-amd64`);
         const parentDirectory = path.dirname(downloadPath);
         await exec.exec(`sudo install -m 555 ${downloadPath} ${parentDirectory}/argocd`);
         await exec.exec(`chmod +x ${parentDirectory}`)
-        toolPath = await tc.cacheFile(`${parentDirectory}/argocd`, 'argocd', 'argocd', argocdVersion);
+        toolPath = await tc.cacheFile(`${parentDirectory}/argocd`, 'tg-argocd', 'tg-argocd', argocdVersion);
       }
       core.addPath(toolPath);
       // Show argocd version
-      await exec.exec(`argocd version --client`);
-      await exec.exec(`which argocd`);
+      await exec.exec(`tg-argocd version --client`);
+      await exec.exec(`which tg-argocd`);
     }
 
   } catch (error) {

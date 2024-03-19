@@ -41,22 +41,17 @@ jobs:
         conftest: '0.39.0'
         kubeval: '0.16.1'
         yq: '4.42.1'
-        jhyq: '4.42.1'
         argocd: '2.10.4'
 
     - run: |
-        kubectl version --client
-        kubectl krew
-        kustomize version
-        helm version
-        which helm
-        conftest --version
-        kubeval --version
-        echo "== yq ==="
-        yq -V
-        echo "== jh-yq ==="
-        jh-yq -V
-        argocd version --client
+        tg-kubectl version --client
+        tg-kubectl tg-krew
+        tg-kustomize version
+        tg-helm version
+        tg-conftest --version
+        tg-kubeval --version
+        tg-yq -V
+        tg-argocd version --client
 
     - name: Delete remote release branch
       run: |

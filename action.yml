@@ -1,5 +1,5 @@
 name: 'Kube Tools'
-description: 'Install kubectl, kustomize, and helm'
+description: 'Install kubectl, kustomize, and helm.  To use the tools, please add "gh-" prefix, such as "gh-yq".'
 author: 'Joe Huang <jhuang@nowcom.com>'
 inputs:
   kubectl:
@@ -25,9 +25,6 @@ inputs:
     # default: '2.45.0'
   yq:
     description: 'Yq version'
-    # default: '4.42.1'
-  jhyq:
-    description: 'jh-yq version'
     # default: '4.42.1'
   argocd:
     descriptip: 'ArgoCD verion'
