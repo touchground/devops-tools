@@ -33,17 +33,17 @@ async function run() {
 
     // Install krew
     if (krewVersion) {
-      toolPath = tc.find('tg-krew', krewVersion);
+      toolPath = tc.find('krew', krewVersion);
       if (!toolPath) {
         const downloadPath = await tc.downloadTool(`https://github.com/kubernetes-sigs/krew/releases/download/v${krewVersion}/krew-linux_amd64.tar.gz`);
         const extractedPath = await tc.extractTar(downloadPath);
         await exec.exec(`chmod +x ${extractedPath}/krew-linux_amd64`);
         await exec.exec(`${extractedPath}/krew-linux_amd64 install krew`);
-        toolPath = await tc.cacheDir(extractedPath, 'tg-krew', krewVersion);
+        toolPath = await tc.cacheDir(extractedPath, 'krew', krewVersion);
       }
       core.addPath(`${process.env.HOME}/.krew/bin`);
       // Show krew version
-      await exec.exec(`tg-kubectl tg-krew version`);
+      await exec.exec(`tg-kubectl krew version`);
     }
 
     // Install kustomize

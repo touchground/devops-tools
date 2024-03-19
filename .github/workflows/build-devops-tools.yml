@@ -45,7 +45,7 @@ jobs:
 
     - run: |
         tg-kubectl version --client
-        tg-kubectl tg-krew
+        tg-kubectl krew
         tg-kustomize version
         tg-helm version
         tg-conftest --version
