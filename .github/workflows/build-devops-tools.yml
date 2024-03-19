@@ -52,7 +52,9 @@ jobs:
         which helm
         conftest --version
         kubeval --version
+        echo "== yq ==="
         yq -V
+        echo "== jh-yq ==="
         jh-yq -V
         argocd version --client
 

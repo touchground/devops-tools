@@ -149,19 +149,19 @@ async function run() {
       // toolPath = tc.find('yq', yqVersion);
       // if (!toolPath) {
       // Check if yq is the expected version
-      let yqActualVersion = '';
-      try {
-        yqActualVersion = (await exec.getExecOutput('jh-yq', ['--version'])).stdout;
-      } catch (error) {
-        core.setFailed(`yq not found: ${error.message}`);
-      }
-      if (!yqActualVersion.includes(jhyqVersion)) {
+      // let yqActualVersion = '';
+      // try {
+      //   yqActualVersion = (await exec.getExecOutput('jh-yq', ['--version'])).stdout;
+      // } catch (error) {
+      //   core.setFailed(`yq not found: ${error.message}`);
+      // }
+      // if (!yqActualVersion.includes(jhyqVersion)) {
         const downloadPath = await tc.downloadTool(`https://github.com/mikefarah/yq/releases/download/v${jhyqVersion}/yq_linux_amd64.tar.gz`);
         const extractedPath = await tc.extractTar(downloadPath);
         await exec.exec(`chmod +x ${extractedPath}`);
         toolPath = await tc.cacheFile(`${extractedPath}/yq_linux_amd64`, 'jh-yq', 'jh-yq', jhyqVersion);
         core.addPath(toolPath);
-      }
+      // }
       
       // Show yq version
       await exec.exec('jh-yq', ['--version']);
