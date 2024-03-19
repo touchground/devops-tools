@@ -159,12 +159,12 @@ async function run() {
         const downloadPath = await tc.downloadTool(`https://github.com/mikefarah/yq/releases/download/v${jhyqVersion}/yq_linux_amd64.tar.gz`);
         const extractedPath = await tc.extractTar(downloadPath);
         await exec.exec(`chmod +x ${extractedPath}`);
-        toolPath = await tc.cacheFile(`${extractedPath}/yq_linux_amd64`, 'yq_linux_amd64', 'jh-yq', jhyqVersion);
+        toolPath = await tc.cacheFile(`${extractedPath}/yq_linux_amd64`, 'jh-yq', 'jh-yq', jhyqVersion);
         core.addPath(toolPath);
       }
       
       // Show yq version
-      await exec.exec('jh-q', ['--version']);
+      await exec.exec('jh-yq', ['--version']);
       await exec.exec(`which jh-yq`);
     }
 
