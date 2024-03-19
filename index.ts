@@ -117,7 +117,7 @@ async function run() {
       if (!toolPath) {
         const downloadPath = await tc.downloadTool(`https://github.com/argoproj/argo-cd/releases/download/v${argocdVersion}/argocd-linux-amd64`);
         await exec.exec(`chmod +x ${downloadPath}`);
-        toolPath = await tc.cacheFile(downloadPath, 'argocd-linux-amd64', 'argocd', yqVersion);
+        toolPath = await tc.cacheFile(downloadPath, 'argocd-linux-amd64', 'argocd', argocdVersion);
       }
       core.addPath(toolPath);
     }
