@@ -23,7 +23,7 @@ async function run() {
       if (!toolPath) {
         const downloadPath = await tc.downloadTool(`https://dl.k8s.io/release/v${kubectlVersion}/bin/linux/amd64/kubectl`);
         await exec.exec(`chmod +x ${downloadPath}`);
-        toolPath = await tc.cacheFile(downloadPath, 'kubectl', 'kubectl', kubectlVersion);
+        toolPath = await tc.cacheFile(downloadPath, 'tg-kubectl', 'tg-kubectl', kubectlVersion);
       }
       core.addPath(toolPath);
       // Show kubectl version
