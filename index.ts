@@ -27,8 +27,10 @@ async function run() {
       }
       core.addPath(toolPath);
       // Show kubectl version
+      await exec.exec(`echo "====== Kubectl "======"`);
       await exec.exec(`tg-kubectl version --client`);
       await exec.exec(`which tg-kubectl`);
+      await exec.exec(`echo "=================================="`);
     }
 
     // Install krew
@@ -43,7 +45,9 @@ async function run() {
       }
       core.addPath(`${process.env.HOME}/.krew/bin`);
       // Show krew version
+      await exec.exec(`echo "====== Krew "======"`);
       await exec.exec(`tg-kubectl krew version`);
+      await exec.exec(`echo "=================================="`);
     }
 
     // Install kustomize
@@ -57,8 +61,10 @@ async function run() {
       }
       core.addPath(toolPath);
       // Show kustomize version
+      await exec.exec(`echo "====== Kustomize "======"`);
       await exec.exec('tg-kustomize', ['version']);
       await exec.exec(`which tg-kustomize`);
+      await exec.exec(`echo "=================================="`);
     }
 
     // Install helm
@@ -72,8 +78,10 @@ async function run() {
       }
       core.addPath(toolPath);
       // Show helm version
-      await exec.exec('tg-helm', ['version']);
+      await exec.exec(`echo "====== Helm "======"`);
+      await exec.exec('tg-helm version --short');
       await exec.exec(`which tg-helm`);
+      await exec.exec(`echo "=================================="`);
     }
 
     // Install conftest
@@ -87,8 +95,10 @@ async function run() {
       }
       core.addPath(toolPath);
       // Show conftest version
+      await exec.exec(`echo "====== Conftest "======"`);
       await exec.exec('tg-conftest', ['--version']);
       await exec.exec(`which tg-conftest`);
+      await exec.exec(`echo "=================================="`);
     }
   
     // Install kubeval
@@ -102,8 +112,10 @@ async function run() {
       }
       core.addPath(toolPath);
       // Show kubeval version
+      await exec.exec(`echo "====== Kubeval "======"`);
       await exec.exec('tg-kubeval', ['--version']);
       await exec.exec(`which tg-kubeval`);
+      await exec.exec(`echo "=================================="`);
     }
 
     // Install gh
@@ -118,8 +130,10 @@ async function run() {
       }
       core.addPath(toolPath);
       // Show gh version
+      await exec.exec(`echo "====== GitHub CLI "======"`);
       await exec.exec('tg-gh', ['version']);
       await exec.exec(`which tg-gh`);
+      await exec.exec(`echo "=================================="`);
     }
 
      // Install yq
@@ -134,8 +148,10 @@ async function run() {
       // }
       
       // Show yq version
+      await exec.exec(`echo "====== YQ "======"`);
       await exec.exec('tg-yq', ['--version']);
       await exec.exec(`which tg-yq`);
+      await exec.exec(`echo "=================================="`);
     }
 
     // Install argocd
@@ -150,8 +166,10 @@ async function run() {
       }
       core.addPath(toolPath);
       // Show argocd version
+      await exec.exec(`echo "====== ArgoCD "======"`);
       await exec.exec(`tg-argocd version --client`);
       await exec.exec(`which tg-argocd`);
+      await exec.exec(`echo "=================================="`);
     }
 
   } catch (error) {
