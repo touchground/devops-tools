@@ -1,9 +1,12 @@
 name: 'Kube Tools'
-description: 'Install kubectl, kustomize, and helm.  To use the tools, please add "gh-" prefix, such as "gh-yq".'
+description: 'Install kubectl, docker, kustomize, and helm.  To use the tools, please add "gh-" prefix, such as "gh-yq".'
 author: 'Joe Huang <jhuang@nowcom.com>'
 inputs:
   kubectl:
     description: 'Kubectl version'
+    # default: '26.0.0'
+  docker:
+    description: 'Docker version'
     # default: '1.29.0'
   krew:
     description: 'Krew version'
