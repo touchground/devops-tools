@@ -19,7 +19,7 @@ async function run() {
     let myOutput = '';
     let myError = '';
 
-    const options = {};
+    const options: exec.ExecOptions = {};
     options.listeners = {
         stdout: (data: Buffer) => {
             myOutput += data.toString();
