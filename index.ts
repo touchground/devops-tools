@@ -194,7 +194,7 @@ async function run() {
       await exec.exec(`which tg-argocd`, [], options);
     }
 
-    console.log('All tools installed successfully:\n', myOutput);
+    console.log(myOutput);
 
   } catch (error) {
     core.setFailed(error.message);
