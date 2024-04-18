@@ -53,7 +53,8 @@ async function run() {
         const downloadPath = await tc.downloadTool(`https://download.docker.com/linux/static/stable/x86_64/docker-${dockerVersion}.tgz`);
         const extractedPath = await tc.extractTar(downloadPath);
         await exec.exec(`chmod +x ${extractedPath}/docker`, [], options);
-        toolPath = await tc.cacheFile(`${extractedPath}/docker`, 'tg-docker', 'tg-docker', dockerVersion);
+        const dockerBinaryPath = path.join(extractedPath, 'docker', 'docker');
+      toolPath = await tc.cacheFile(dockerBinaryPath, 'tg-docker', 'tg-docker', dockerVersion);
       }
       core.addPath(toolPath);
       // Show docker version
