@@ -185,6 +185,8 @@ async function run() {
       await exec.exec(`echo "=================================="`);
     }
 
+    console.log('All tools installed successfully:', myOutput);
+
   } catch (error) {
     core.setFailed(error.message);
   }
