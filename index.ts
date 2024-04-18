@@ -35,15 +35,14 @@ async function run() {
       toolPath = tc.find('tg-kubectl', kubectlVersion);
       if (!toolPath) {
         const downloadPath = await tc.downloadTool(`https://dl.k8s.io/release/v${kubectlVersion}/bin/linux/amd64/kubectl`);
-        await exec.exec(`chmod +x ${downloadPath}`);
+        await exec.exec(`chmod +x ${downloadPath}`, [], options);
         toolPath = await tc.cacheFile(downloadPath, 'tg-kubectl', 'tg-kubectl', kubectlVersion);
       }
       core.addPath(toolPath);
       // Show kubectl version
-      await exec.exec(`echo "====== Kubectl "======"`);
-      await exec.exec(`tg-kubectl version --client`);
-      await exec.exec(`which tg-kubectl`);
-      await exec.exec(`echo "=================================="`);
+      await exec.exec(`echo "====== Kubectl "======"`, [], options);
+      await exec.exec(`tg-kubectl version --client`, [], options);
+      await exec.exec(`which tg-kubectl`, [], options);
     }
 
     // Install krew
@@ -52,15 +51,14 @@ async function run() {
       if (!toolPath) {
         const downloadPath = await tc.downloadTool(`https://github.com/kubernetes-sigs/krew/releases/download/v${krewVersion}/krew-linux_amd64.tar.gz`);
         const extractedPath = await tc.extractTar(downloadPath);
-        await exec.exec(`chmod +x ${extractedPath}/krew-linux_amd64`);
-        await exec.exec(`${extractedPath}/krew-linux_amd64 install krew`);
+        await exec.exec(`chmod +x ${extractedPath}/krew-linux_amd64`, [], options);
+        await exec.exec(`${extractedPath}/krew-linux_amd64 install krew`, [], options);
         toolPath = await tc.cacheDir(extractedPath, 'krew', krewVersion);
       }
       core.addPath(`${process.env.HOME}/.krew/bin`);
       // Show krew version
-      await exec.exec(`echo "====== Krew "======"`);
-      await exec.exec(`tg-kubectl krew version`);
-      await exec.exec(`echo "=================================="`);
+      await exec.exec(`echo "====== Krew "======"`, [], options);
+      await exec.exec(`tg-kubectl krew version`, [], options);
     }
 
     // Install kustomize
@@ -69,15 +67,14 @@ async function run() {
       if (!toolPath) {
         const downloadPath = await tc.downloadTool(`https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv${kustomizeVersion}/kustomize_v${kustomizeVersion}_linux_amd64.tar.gz`);
         const extractedPath = await tc.extractTar(downloadPath);
-        await exec.exec(`chmod +x ${extractedPath}/kustomize`);
+        await exec.exec(`chmod +x ${extractedPath}/kustomize`, [], options);
         toolPath = await tc.cacheFile(`${extractedPath}/kustomize`, 'tg-kustomize', 'tg-kustomize', kustomizeVersion);
       }
       core.addPath(toolPath);
       // Show kustomize version
-      await exec.exec(`echo "====== Kustomize "======"`);
-      await exec.exec('tg-kustomize', ['version']);
-      await exec.exec(`which tg-kustomize`);
-      await exec.exec(`echo "=================================="`);
+      await exec.exec(`echo "====== Kustomize "======"`, [], options);
+      await exec.exec('tg-kustomize', ['version'], options);
+      await exec.exec(`which tg-kustomize`, [], options);
     }
 
     // Install helm
@@ -86,15 +83,14 @@ async function run() {
       if (!toolPath) {
         const downloadPath = await tc.downloadTool(`https://get.helm.sh/helm-v${helmVersion}-linux-amd64.tar.gz`);
         const extractedPath = await tc.extractTar(downloadPath);
-        await exec.exec(`chmod +x ${extractedPath}/linux-amd64/helm`);
+        await exec.exec(`chmod +x ${extractedPath}/linux-amd64/helm`, [], options);
         toolPath = await tc.cacheFile(`${extractedPath}/linux-amd64/helm`, 'tg-helm', 'tg-helm', helmVersion);
       }
       core.addPath(toolPath);
       // Show helm version
-      await exec.exec(`echo "====== Helm "======"`);
-      await exec.exec('tg-helm version --short');
-      await exec.exec(`which tg-helm`);
-      await exec.exec(`echo "=================================="`);
+      await exec.exec(`echo "====== Helm "======"`, [], options);
+      await exec.exec('tg-helm version --short', [], options);
+      await exec.exec(`which tg-helm`, [], options);
     }
 
     // Install conftest
@@ -103,15 +99,14 @@ async function run() {
       if (!toolPath) {
         const downloadPath = await tc.downloadTool(`https://github.com/open-policy-agent/conftest/releases/download/v${conftestVersion}/conftest_${conftestVersion}_Linux_x86_64.tar.gz`);
         const extractedPath = await tc.extractTar(downloadPath);
-        await exec.exec(`chmod +x ${extractedPath}/conftest`);
+        await exec.exec(`chmod +x ${extractedPath}/conftest`, [], options);
         toolPath = await tc.cacheFile(`${extractedPath}/conftest`, 'tg-conftest', 'tg-conftest', conftestVersion);
       }
       core.addPath(toolPath);
       // Show conftest version
-      await exec.exec(`echo "====== Conftest "======"`);
-      await exec.exec('tg-conftest', ['--version']);
-      await exec.exec(`which tg-conftest`);
-      await exec.exec(`echo "=================================="`);
+      await exec.exec(`echo "====== Conftest "======"`, [], options);
+      await exec.exec('tg-conftest', ['--version'], options);
+      await exec.exec(`which tg-conftest`, [], options);
     }
   
     // Install kubeval
@@ -120,15 +115,14 @@ async function run() {
       if (!toolPath) {
         const downloadPath = await tc.downloadTool(`https://github.com/instrumenta/kubeval/releases/download/v${kubevalVersion}/kubeval-linux-amd64.tar.gz`);
         const extractedPath = await tc.extractTar(downloadPath);
-        await exec.exec(`chmod +x ${extractedPath}/kubeval`);
+        await exec.exec(`chmod +x ${extractedPath}/kubeval`, [], options);
         toolPath = await tc.cacheFile(`${extractedPath}/kubeval`, 'tg-kubeval', 'tg-kubeval', kubevalVersion);
       }
       core.addPath(toolPath);
       // Show kubeval version
-      await exec.exec(`echo "====== Kubeval "======"`);
-      await exec.exec('tg-kubeval', ['--version']);
-      await exec.exec(`which tg-kubeval`);
-      await exec.exec(`echo "=================================="`);
+      await exec.exec(`echo "====== Kubeval "======"`, [], options);
+      await exec.exec('tg-kubeval', ['--version'], options);
+      await exec.exec(`which tg-kubeval`, [], options);
     }
 
     // Install gh
@@ -146,7 +140,6 @@ async function run() {
       await exec.exec(`echo "====== GitHub CLI "======"`, [], options);
       await exec.exec('tg-gh', ['version'], options);
       await exec.exec(`which tg-gh`, [], options);
-      await exec.exec(`echo "=================================="`, [], options);
     }
 
      // Install yq
@@ -164,7 +157,6 @@ async function run() {
       await exec.exec(`echo "====== YQ "======"`, [], options);
       await exec.exec('tg-yq', ['--version'], options);
       await exec.exec(`which tg-yq`, [], options);
-      await exec.exec(`echo "=================================="`, [], options);
     }
 
     // Install argocd
@@ -173,19 +165,18 @@ async function run() {
       if (!toolPath) {
         const downloadPath = await tc.downloadTool(`https://github.com/argoproj/argo-cd/releases/download/v${argocdVersion}/argocd-linux-amd64`);
         const parentDirectory = path.dirname(downloadPath);
-        await exec.exec(`sudo install -m 555 ${downloadPath} ${parentDirectory}/argocd`);
-        await exec.exec(`chmod +x ${parentDirectory}`)
+        await exec.exec(`sudo install -m 555 ${downloadPath} ${parentDirectory}/argocd`, [], options);
+        await exec.exec(`chmod +x ${parentDirectory}`, [], options)
         toolPath = await tc.cacheFile(`${parentDirectory}/argocd`, 'tg-argocd', 'tg-argocd', argocdVersion);
       }
       core.addPath(toolPath);
       // Show argocd version
-      await exec.exec(`echo "====== ArgoCD "======"`);
-      await exec.exec(`tg-argocd version --client`);
-      await exec.exec(`which tg-argocd`);
-      await exec.exec(`echo "=================================="`);
+      await exec.exec(`echo "====== ArgoCD "======"`, [], options);
+      await exec.exec(`tg-argocd version --client`, [], options);
+      await exec.exec(`which tg-argocd`, [], options);
     }
 
-    console.log('All tools installed successfully:', myOutput);
+    console.log('All tools installed successfully:\n', myOutput);
 
   } catch (error) {
     core.setFailed(error.message);
