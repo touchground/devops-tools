@@ -16,6 +16,19 @@ async function run() {
     const yqVersion = core.getInput('yq');
     const argocdVersion = core.getInput('argocd');
     let toolPath = '';
+    let myOutput = '';
+    let myError = '';
+
+    const options = {};
+    options.listeners = {
+        stdout: (data: Buffer) => {
+            myOutput += data.toString();
+        },
+        stderr: (data: Buffer) => {
+            myError += data.toString();
+        }
+    };
+    options.silent = true;
 
     // Install kubectl
     if (kubectlVersion) {
@@ -124,16 +137,16 @@ async function run() {
       if (!toolPath) {
         const downloadPath = await tc.downloadTool(`https://github.com/cli/cli/releases/download/v${ghVersion}/gh_${ghVersion}_linux_amd64.tar.gz`);
         const extractedPath = await tc.extractTar(downloadPath);
-        await exec.exec(`chmod +x ${extractedPath}/gh_${ghVersion}_linux_amd64/bin/gh`);
+        await exec.exec(`chmod +x ${extractedPath}/gh_${ghVersion}_linux_amd64/bin/gh`, [], options);
         toolPath = await tc.cacheFile(`${extractedPath}/gh_${ghVersion}_linux_amd64/bin/gh`, 'tg-gh', 'tg-gh', ghVersion);
         // toolPath = await tc.cacheDir(extractedPath, 'tg-gh', ghVersion);
       }
       core.addPath(toolPath);
       // Show gh version
-      await exec.exec(`echo "====== GitHub CLI "======"`);
-      await exec.exec('tg-gh', ['version']);
-      await exec.exec(`which tg-gh`);
-      await exec.exec(`echo "=================================="`);
+      await exec.exec(`echo "====== GitHub CLI "======"`, [], options);
+      await exec.exec('tg-gh', ['version'], options);
+      await exec.exec(`which tg-gh`, [], options);
+      await exec.exec(`echo "=================================="`, [], options);
     }
 
      // Install yq
@@ -142,16 +155,16 @@ async function run() {
       // if (!toolPath) {
         const downloadPath = await tc.downloadTool(`https://github.com/mikefarah/yq/releases/download/v${yqVersion}/yq_linux_amd64.tar.gz`);
         const extractedPath = await tc.extractTar(downloadPath);
-        await exec.exec(`chmod +x ${extractedPath}/yq_linux_amd64`);
+        await exec.exec(`chmod +x ${extractedPath}/yq_linux_amd64`, [], options);
         toolPath = await tc.cacheFile(`${extractedPath}/yq_linux_amd64`, 'tg-yq', 'tg-yq', yqVersion);
         core.addPath(toolPath);
       // }
       
       // Show yq version
-      await exec.exec(`echo "====== YQ "======"`);
-      await exec.exec('tg-yq', ['--version']);
-      await exec.exec(`which tg-yq`);
-      await exec.exec(`echo "=================================="`);
+      await exec.exec(`echo "====== YQ "======"`, [], options);
+      await exec.exec('tg-yq', ['--version'], options);
+      await exec.exec(`which tg-yq`, [], options);
+      await exec.exec(`echo "=================================="`, [], options);
     }
 
     // Install argocd
