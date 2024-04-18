@@ -7,6 +7,7 @@ import * as fs from 'fs';
 async function run() {
   try {
     const kubectlVersion = core.getInput('kubectl');
+    const dockerVersion = core.getInput('docker');
     const krewVersion = core.getInput('krew');
     const kustomizeVersion = core.getInput('kustomize');
     const helmVersion = core.getInput('helm');
@@ -43,6 +44,22 @@ async function run() {
       await exec.exec(`echo "====== Kubectl "======"`, [], options);
       await exec.exec(`tg-kubectl version --client`, [], options);
       await exec.exec(`which tg-kubectl`, [], options);
+    }
+
+    // Install docker
+    if (dockerVersion) {
+      toolPath = tc.find('tg-docker', dockerVersion);
+      if (!toolPath) {
+        const downloadPath = await tc.downloadTool(`https://download.docker.com/linux/static/stable/x86_64/docker-${dockerVersion}.tgz`);
+        const extractedPath = await tc.extractTar(downloadPath);
+        await exec.exec(`chmod +x ${extractedPath}/docker`, [], options);
+        toolPath = await tc.cacheFile(`${extractedPath}/docker`, 'tg-docker', 'tg-docker', dockerVersion);
+      }
+      core.addPath(toolPath);
+      // Show docker version
+      await exec.exec(`echo "====== Docker "======"`, [], options);
+      await exec.exec('tg-docker', ['--version'], options);
+      await exec.exec(`which tg-docker`, [], options);
     }
 
     // Install krew
