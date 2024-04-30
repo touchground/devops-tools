@@ -32,6 +32,8 @@ inputs:
   argocd:
     descriptip: 'ArgoCD verion'
     # default: '2.10.4'
+  git:
+    descriptip: 'ArgoCD verion'
 branding:
   icon: 'terminal'
   color: 'blue'
