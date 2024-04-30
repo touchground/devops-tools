@@ -16,6 +16,7 @@ async function run() {
     const ghVersion = core.getInput('gh');
     const yqVersion = core.getInput('yq');
     const argocdVersion = core.getInput('argocd');
+    const gitVersion = core.getInput('git');
     let toolPath = '';
     let myOutput = '';
     let myError = '';
@@ -193,6 +194,22 @@ async function run() {
       await exec.exec(`tg-argocd version --client`, [], options);
       await exec.exec(`which tg-argocd`, [], options);
     }
+
+    // Install Git
+    if (gitVersion) {
+      toolPath = tc.find('tg-git', gitVersion);
+      if (!toolPath) {
+        const downloadPath = await tc.downloadTool(`https://mirrors.edge.kernel.org/pub/software/scm/git/git-${gitVersion}.tar.gz`);
+        const extractedPath = await tc.extractTar(downloadPath);
+        await exec.exec(`cd ${extractedPath} && make prefix=/usr install install-doc install-html install-info`, [], options);
+      }
+      core.addPath(toolPath);
+      // Show git version
+      await exec.exec(`echo "====== Git "======"`, [], options);
+      await exec.exec('git', ['--version'], options);
+      await exec.exec(`which git`, [], options);
+    }
+
 
     console.log(myOutput);
 
