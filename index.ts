@@ -199,17 +199,19 @@ async function run() {
     if (gitVersion) {
       toolPath = tc.find('tg-git', gitVersion);
       if (!toolPath) {
-        const downloadPath = await tc.downloadTool(`https://mirrors.edge.kernel.org/pub/software/scm/git/git-${gitVersion}.tar.gz`);
+        const downloadPath = await tc.downloadTool(`https://github.com/git/git/archive/refs/tags/v${gitVersion}.tar.gz`);
         const extractedPath = await tc.extractTar(downloadPath);
-        await exec.exec(`bash -c "cd ${extractedPath} && make prefix=/usr install install-doc install-html install-info"`, [], options);
+        await exec.exec('sudo apt-get update', [], options);
+        await exec.exec('sudo apt-get install make', [], options);
+        await exec.exec(`make -C ${extractedPath} prefix=${extractedPath}/install install`, [], options);
+        toolPath = await tc.cacheDir(`${extractedPath}/install/bin`, 'tg-git', gitVersion);
       }
       core.addPath(toolPath);
       // Show git version
       await exec.exec(`echo "====== Git "======"`, [], options);
-      await exec.exec('git', ['--version'], options);
-      await exec.exec(`which git`, [], options);
+      await exec.exec('tg-git --version', [], options);
+      await exec.exec(`which tg-git`, [], options);
     }
-
 
     console.log(myOutput);
 
