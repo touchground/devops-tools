@@ -201,7 +201,7 @@ async function run() {
       if (!toolPath) {
         const downloadPath = await tc.downloadTool(`https://mirrors.edge.kernel.org/pub/software/scm/git/git-${gitVersion}.tar.gz`);
         const extractedPath = await tc.extractTar(downloadPath);
-        await exec.exec(`cd ${extractedPath} && make prefix=/usr install install-doc install-html install-info`, [], options);
+        await exec.exec(`bash -c "cd ${extractedPath} && make prefix=/usr install install-doc install-html install-info"`, [], options);
       }
       core.addPath(toolPath);
       // Show git version
