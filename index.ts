@@ -30,7 +30,7 @@ async function run() {
             myError += data.toString();
         }
     };
-    options.silent = false;
+    options.silent = true;
 
     // Install kubectl
     if (kubectlVersion) {
@@ -203,7 +203,7 @@ async function run() {
         const extractedPath = await tc.extractTar(downloadPath);
         await exec.exec('sudo apt-get update', [], options);
         await exec.exec('sudo apt-get install make', [], options);
-        await exec.exec(`make -C ${extractedPath} prefix=${extractedPath}/install install`, [], options);
+        await exec.exec(`sudo make -C ${extractedPath} prefix=${extractedPath}/install install`, [], options);
         toolPath = await tc.cacheDir(`${extractedPath}/install/bin`, 'tg-git', gitVersion);
       }
       core.addPath(toolPath);
