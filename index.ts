@@ -30,7 +30,7 @@ async function run() {
             myError += data.toString();
         }
     };
-    options.silent = true;
+    options.silent = false;
 
     // Install kubectl
     if (kubectlVersion) {
