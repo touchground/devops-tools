@@ -180,12 +180,14 @@ async function run() {
     }
 
     // Install jq
+    https://github.com/jqlang/jq/releases/download/jq-1.6/jq-1.6.tar.gz
     if (jqVersion) {
-      toolPath = tc.find('tg-jq', jqVersion);
-      if (!toolPath) {
+      // toolPath = tc.find('tg-jq', jqVersion);
+      // if (!toolPath) {
         const downloadPath = await tc.downloadTool(`https://github.com/jqlang/jq/releases/download/jq-${jqVersion}/jq-linux-amd64`);
+        await exec.exec(`chmod +x ${downloadPath}`, [], options);
         toolPath = await tc.cacheFile(downloadPath, 'tg-jq', 'tg-jq', jqVersion);
-      }
+      // }
       core.addPath(toolPath);
       // Show jq version
       await exec.exec(`echo "====== jq "======"`, [], options);
