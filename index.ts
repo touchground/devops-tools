@@ -15,6 +15,7 @@ async function run() {
     const kubevalVersion = core.getInput('kubeval');
     const ghVersion = core.getInput('gh');
     const yqVersion = core.getInput('yq');
+    const jqVersion = core.getInput('jq');
     const argocdVersion = core.getInput('argocd');
     const gitVersion = core.getInput('git');
     let toolPath = '';
@@ -163,19 +164,33 @@ async function run() {
 
      // Install yq
      if (yqVersion) {
-      // toolPath = tc.find('tg-yq', yqVersion);
-      // if (!toolPath) {
+      toolPath = tc.find('tg-yq', yqVersion);
+      if (!toolPath) {
         const downloadPath = await tc.downloadTool(`https://github.com/mikefarah/yq/releases/download/v${yqVersion}/yq_linux_amd64.tar.gz`);
         const extractedPath = await tc.extractTar(downloadPath);
         await exec.exec(`chmod +x ${extractedPath}/yq_linux_amd64`, [], options);
         toolPath = await tc.cacheFile(`${extractedPath}/yq_linux_amd64`, 'tg-yq', 'tg-yq', yqVersion);
         core.addPath(toolPath);
-      // }
+      }
       
       // Show yq version
       await exec.exec(`echo "====== YQ "======"`, [], options);
       await exec.exec('tg-yq', ['--version'], options);
       await exec.exec(`which tg-yq`, [], options);
+    }
+
+    // Install jq
+    if (jqVersion) {
+      toolPath = tc.find('tg-jq', jqVersion);
+      if (!toolPath) {
+        const downloadPath = await tc.downloadTool(`https://github.com/jqlang/jq/releases/download/jq-${jqVersion}/jq-linux-amd64`);
+        toolPath = await tc.cacheFile(downloadPath, 'tg-jq', 'tg-jq', jqVersion);
+      }
+      core.addPath(toolPath);
+      // Show jq version
+      await exec.exec(`echo "====== jq "======"`, [], options);
+      await exec.exec('tg-jq', ['--version'], options);
+      await exec.exec(`which tg-jq`, [], options);
     }
 
     // Install argocd
