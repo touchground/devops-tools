@@ -29,6 +29,9 @@ inputs:
   yq:
     description: 'Yq version'
     # default: '4.42.1'
+  jq:
+    description: 'jq version'
+    # default: '1.7.1'
   argocd:
     descriptip: 'ArgoCD verion'
     # default: '2.10.4'
