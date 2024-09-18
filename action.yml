@@ -37,6 +37,10 @@ inputs:
     # default: '2.10.4'
   git:
     descriptip: 'ArgoCD verion'
+  kubeconform:
+    descriptip: 'Kubeconform verion'
+    # default: '0.6.7'
+
 branding:
   icon: 'terminal'
   color: 'blue'

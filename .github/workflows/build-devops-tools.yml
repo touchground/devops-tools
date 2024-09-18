@@ -42,6 +42,7 @@ jobs:
         kubeval: '0.16.1'
         yq: '4.42.1'
         argocd: '2.10.4'
+        kubeconform: '0.6.7'
 
     - run: |
         tg-kubectl version --client
@@ -52,6 +53,7 @@ jobs:
         tg-kubeval --version
         tg-yq -V
         tg-argocd version --client
+        tg-kubeconform -v
 
     - name: Delete remote release branch
       run: |
