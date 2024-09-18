@@ -220,8 +220,8 @@ async function run() {
         const downloadPath = await tc.downloadTool(`https://github.com/yannh/kubeconform/releases/download/v${kubeconformVersion}/kubeconform-linux-amd64.tar.gz`);
         const extractedPath = await tc.extractTar(downloadPath);
         const kubeconformPath = path.join(extractedPath, 'kubeconform');
-        await exec.exec(`chmod +x ${kubeconformPath}`, [], options);
-        toolPath = await tc.cacheFile(kubeconformPath, 'tg-kubeconform', 'tg-kubeconform', kubeconformVersion);
+        await exec.exec(`chmod +x ${extractedPath}/kubeconform-linux-amd64`, [], options);
+        toolPath = await tc.cacheFile(`${extractedPath}/kubeconform-linux-amd64`, 'tg-kubeconform', 'tg-kubeconform', kubeconformVersion);
       }
       core.addPath(toolPath);
       // Show kubeconform version
