@@ -18,6 +18,7 @@ async function run() {
     const jqVersion = core.getInput('jq');
     const argocdVersion = core.getInput('argocd');
     const gitVersion = core.getInput('git');
+    const kubeconformVersion = core.getInput('kubeconform');
     let toolPath = '';
     let myOutput = '';
     let myError = '';
@@ -210,6 +211,23 @@ async function run() {
       await exec.exec(`echo "====== ArgoCD "======"`, [], options);
       await exec.exec(`tg-argocd version --client`, [], options);
       await exec.exec(`which tg-argocd`, [], options);
+    }
+
+    // Install Kubeconform
+    if (kubeconformVersion) {
+      toolPath = tc.find('tg-kubeconform', kubeconformVersion);
+      if (!toolPath) {
+        const downloadPath = await tc.downloadTool(`https://github.com/yannh/kubeconform/releases/download/v${kubeconformVersion}/kubeconform-linux-amd64.tar.gz`);
+        const extractedPath = await tc.extractTar(downloadPath);
+        const kubeconformPath = path.join(extractedPath, 'kubeconform');
+        await exec.exec(`chmod +x ${kubeconformPath}`, [], options);
+        toolPath = await tc.cacheFile(kubeconformPath, 'tg-kubeconform', 'tg-kubeconform', kubeconformVersion);
+      }
+      core.addPath(toolPath);
+      // Show kubeconform version
+      await exec.exec(`echo "====== Kubeconform "======"`, [], options);
+      await exec.exec(`tg-kubeconform --version`, [], options);
+      await exec.exec(`which tg-kubeconform`, [], options);
     }
 
     console.log(myOutput);
