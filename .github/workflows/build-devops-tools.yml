@@ -45,15 +45,15 @@ jobs:
         kubeconform: '0.6.7'
 
     - run: |
-        tg-kubectl version --client
-        tg-kubectl krew
-        tg-kustomize version
-        tg-helm version
-        tg-conftest --version
-        tg-kubeval --version
-        tg-yq -V
-        tg-argocd version --client
-        tg-kubeconform -v
+        kubectl version --client
+        kubectl krew
+        kustomize version
+        helm version
+        conftest --version
+        kubeval --version
+        yq -V
+        argocd version --client
+        kubeconform -v
 
     - name: Delete remote release branch
       run: |
